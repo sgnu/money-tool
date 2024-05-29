@@ -21,16 +21,16 @@ const submit = async () => {
 </script>
 
 <template>
-    <form class="max-w-96">
-        <label class="input input-bordered flex items-center gap-2">
+    <form class="max-w-96 flex flex-col gap-2 items-end shadow-md p-8 rounded">
+        <label class="input input-bordered flex items-center gap-2 w-[100%]">
             Name
             <input type="text" class="grow" v-model="formData.name" />
         </label>
-        <label class="input input-bordered flex items-center gap-2">
+        <label class="input input-bordered flex items-center gap-2 w-[100%]">
             URL
             <input type="text" class="grow" v-model="formData.url" />
         </label>
-        <label class="input input-bordered flex items-center gap-2">
+        <label class="input input-bordered flex items-center gap-2 w-[100%]">
             Favicon
             <input type="text" class="grow" v-model="formData.icon"/>
         </label>
