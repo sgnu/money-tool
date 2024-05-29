@@ -3,6 +3,7 @@ const props = defineProps<{
     institution: Institution
 }>()
 
+// TODO: add emit so page can update when an institution gets deleted
 
 const deleteInstitution = async () => {
     await $fetch('/api/institutions/deleteInstitution', {
