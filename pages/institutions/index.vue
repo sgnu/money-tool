@@ -1,4 +1,5 @@
 <script setup lang="ts">
+useFetch('/api/initDatabase')
 const { data } = useFetch('/api/institutions/getAllInstitutions')
 </script>
 
