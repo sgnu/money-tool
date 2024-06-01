@@ -1,4 +1,4 @@
-export { }
+export { Institution, Account }
 
 declare global {
     interface Institution {
@@ -16,14 +16,5 @@ declare global {
         institutionId: number,
         initialBalance: number,
         currentBalance: number,
-    }
-
-    enum AccountTypes {
-        checkings,
-        savings,
-        credit,
-        brokerage,
-        asset,
-        liability
     }
 }
