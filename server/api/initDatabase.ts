@@ -20,6 +20,7 @@ export default defineEventHandler((event) => {
                 id INTEGER PRIMARY KEY,
                 name TEXT,
                 account_number INTEGER,
+                account_type INTEGER NOT NULL,
                 institution_id INTEGER NOT NULL,
                 initial_balance INTEGER NOT NULL,
                 current_balance INTEGER NOT NULL,
