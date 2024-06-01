@@ -1,4 +1,5 @@
 <script setup lang="ts">
+useFetch('/api/initDatabase')
 </script>
 
 <template>
