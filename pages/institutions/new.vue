@@ -9,7 +9,7 @@ const formData = reactive({
 const submit = async () => {
     loading_modal.showModal()
     isLoading = true
-    await $fetch('/api/institutions/createInstitution', {
+    await $fetch('/api/institutions/create', {
         method: 'POST',
         body: formData,
         onResponse() {
