@@ -1,8 +1,8 @@
 export enum AccountTypes {
-    checkings,
-    savings,
-    credit,
-    brokerage,
-    asset,
-    liability
+    CHECKINGS = "Checkings",
+    SAVINGS = "Savings",
+    CREDIT = "Credit",
+    BROKERAGE = "Brokerage",
+    ASSET = "Asset",
+    LIABILITY = "Liability"
 }
