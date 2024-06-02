@@ -16,12 +16,12 @@ const deleteInstitution = async () => {
 <template>
     <div class="card w-64 bg-base-100 shadow-xl">
         <div class="card-body">
-            <a :href="institution.url">
+            <NuxtLink :to="`/institutions/${institution.id}`">
                 <h2 class="card-title">
                     <img :src="institution.icon" class="w-8 h-8" />
                     {{ institution.name }}
                 </h2>
-            </a>
+            </NuxtLink>
             <button class="button btn-error" @click="deleteInstitution">Delete</button>
         </div>
     </div>
