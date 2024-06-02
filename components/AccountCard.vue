@@ -9,11 +9,10 @@ const props = defineProps<{
   const isLiability = computed(() => {
     return props.account.accountType === AccountTypes.CREDIT || props.account.accountType === AccountTypes.LIABILITY
   })
-
 </script>
 
 <template>
-  <div class="card w-64 bg-base-100 shadow-xl">
+  <CardBase>
     <div class="card-body">
       <NuxtLink class="card-title" to="/">
         <h2>
@@ -24,5 +23,5 @@ const props = defineProps<{
       <p v-if="isLiability" class="text-right">$({{ account.currentBalance }})</p>
       <p v-else class="text-right">${{ account.currentBalance }}</p>
     </div>
-  </div>
+  </CardBase>
 </template>

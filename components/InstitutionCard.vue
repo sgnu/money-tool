@@ -14,7 +14,7 @@ const deleteInstitution = async () => {
 </script>
 
 <template>
-    <div class="card w-64 bg-base-100 shadow-xl">
+    <CardBase>
         <div class="card-body">
             <NuxtLink :to="`/institutions/${institution.id}`">
                 <h2 class="card-title">
@@ -24,5 +24,5 @@ const deleteInstitution = async () => {
             </NuxtLink>
             <button class="button btn-error" @click="deleteInstitution">Delete</button>
         </div>
-    </div>
+    </CardBase>
 </template>
