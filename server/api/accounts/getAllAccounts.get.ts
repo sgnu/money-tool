@@ -1,7 +1,21 @@
 import { createRequire } from 'module'
 
 export default eventHandler(async () => {
-    const accounts = await sqlCall()
+    const accountData: any = await sqlCall()
+    const accounts: Account[] = []
+
+    accountData.forEach((account: SQLAccount) => {
+        const newAccount: Account = {
+            id: account.id,
+            name: account.name,
+            accountNumber: account.account_number,
+            accountType: account.account_type,
+            institutionId: account.institution_id,
+            initialBalance: account.initial_balance,
+            currentBalance: account.current_balance
+        }
+        accounts.push(newAccount)
+    })
     return accounts
 })
 
@@ -30,4 +44,14 @@ function sqlCall() {
     })
 
     return promise
+}
+
+interface SQLAccount {
+    account_number: number,
+    account_type: string,
+    current_balance: number,
+    id: number,
+    initial_balance: number,
+    institution_id: number,
+    name: string,
 }
