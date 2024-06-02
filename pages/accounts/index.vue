@@ -1,11 +1,13 @@
 <script setup lang="ts">
-const { data: accounts } = useFetch('/api/accounts/getAllAccounts')
-const { data: institutions } = useFetch('/api/institutions/getAllInstitutions')
-
-const institutionMap = new Map<number, Institution>();
-
-(institutions as any).forEach((institution: Institution) => {
-    institutionMap.set(institution.id, institution)
+const institutionMap = new Map()
+const { data: accounts } = await useFetch('/api/accounts/getAllAccounts')
+await useFetch('/api/institutions/getAllInstitutions', {
+    onResponse({ response }) {
+        (response._data as any).forEach((institution: Institution) => {
+            console.log(institution)
+            institutionMap.set(institution.id, institution)
+        })
+    }
 })
 
 </script>
