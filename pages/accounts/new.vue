@@ -10,8 +10,9 @@ const { data: institutions } = await useFetch('/api/institutions/getAllInstituti
     }
 })
 
-const institutionMap = new Map()
-institutions.value.forEach((tempInstitution: Institution) => {
+const institutionMap = new Map();
+
+(institutions.value as any).forEach((tempInstitution: Institution) => {
     institutionMap.set(tempInstitution.name, tempInstitution.id)
 })
 
@@ -19,7 +20,7 @@ const formData = reactive({
     name: '',
     accountNumber: null,
     accountType: AccountTypes.CHECKINGS,
-    institution: institutions.value[0].name,
+    institution: (institutions.value as any[])[0].name,
     initialBalance: null
 })
 
@@ -61,7 +62,7 @@ const submit = () => {
                 <h1 class="text-center text-2xl w-full">New Account</h1>
                 <select class="select select-bordered w-full max-w-xs" v-model="formData.institution">
                     <option disabled selected>Institution</option>
-                    <option v-for="institution in institutions">{{ institution.name }}</option>
+                    <option v-for="institution in (institutions as Institution[])">{{ institution.name }}</option>
                 </select>
                 <FormLabel>
                     Name
