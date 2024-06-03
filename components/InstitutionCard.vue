@@ -22,7 +22,9 @@ const deleteInstitution = async () => {
                     {{ institution.name }}
                 </h2>
             </NuxtLink>
-            <button class="button btn-error" @click="deleteInstitution">Delete</button>
+            <div class="card-actions justify-end">
+                <button class="btn btn-outline btn-error w-fit justify-end" @click="deleteInstitution">Delete</button>
+            </div>
         </div>
     </CardBase>
 </template>
