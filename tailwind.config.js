@@ -21,8 +21,13 @@ export default {
         "secondary-content": "#1e1e2e",
         "accent": "#f5c2e7",
         "accent-content": "#1e1e2e",
+        "success": "#a6e3a1",
+        "warning": "#f9e2af",
+        "error": "#f38ba8",
         "neutral": "#313244",
         "base-100": "#1e1e2e",
+        "base-200": "#181825",
+        "base-300": "#11111b"
       }
     }],
     base: true,
