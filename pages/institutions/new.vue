@@ -23,7 +23,7 @@ const submit = () => {
 
 <template>
     <div class="flex justify-center">
-        <form class="max-w-96 flex flex-col gap-2 items-end shadow-md p-8 rounded">
+        <FormCard>
             <label class="input input-bordered flex items-center gap-2 w-[100%]">
                 Name
                 <input type="text" class="grow" v-model="formData.name" />
@@ -37,7 +37,7 @@ const submit = () => {
                 <input type="text" class="grow" v-model="formData.icon"/>
             </label>
             <button type="submit" class="btn btn-primary" @click.prevent="submit">Create</button>
-        </form>
+        </FormCard>
         <div role="dialog" :class="isLoading ? 'modal modal-open' : 'modal'">
             <div class="modal-box flex justify-center w-36">
                 <span class="loading loading-spinner loading-lg"></span>

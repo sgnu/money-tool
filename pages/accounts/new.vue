@@ -49,16 +49,14 @@ const submit = () => {
 </script>
 
 <template>
-    <Transition name="loading-form">
-        <div v-if="isLoading">
-            <FormCard>
+    <div class="flex justify-center">
+        <Transition name="loading-form">
+            <FormCard v-if="isLoading">
                 <div class="skeleton w-full h-12"></div>
                 <div class="skeleton w-full h-12"></div>
                 <div class="skeleton w-full h-12"></div>
             </FormCard>
-        </div>
-        <div v-else>
-            <FormCard @submit.prevent="submit">
+            <FormCard v-else @submit.prevent="submit">
                 <h1 class="text-center text-2xl w-full">New Account</h1>
                 <select class="select select-bordered w-full max-w-xs" v-model="formData.institution">
                     <option disabled selected>Institution</option>
@@ -69,7 +67,7 @@ const submit = () => {
                     <input type="text" class="grow" v-model="formData.name">
                 </FormLabel>
                 <FormLabel>
-                    Account Number
+                    Account #
                     <input type="text" inputmode="numeric" pattern="\d*" class="grow"  title="Numbers only" v-model="formData.accountNumber">
                 </FormLabel>
                 <select class="select select-bordered w-full max-w-xs" v-model="formData.accountType">
@@ -82,8 +80,8 @@ const submit = () => {
                 </FormLabel>
                 <input type="submit" class="btn btn-primary" @submit="submit">
             </FormCard>
-        </div>
-    </Transition>
+        </Transition>
+    </div>
 </template>
 
 <style scoped>
