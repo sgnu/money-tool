@@ -23,7 +23,10 @@ const deleteInstitution = async () => {
                 </h2>
             </NuxtLink>
             <div class="card-actions justify-end">
-                <button class="btn btn-outline btn-error w-fit justify-end" @click="deleteInstitution">Delete</button>
+                <div class="join">
+                    <NuxtLink class="btn btn-outline btn-sm join-item w-fit" :to="`/institutions/${institution.id}/edit`">Edit</NuxtLink>
+                    <button class="btn btn-outline btn-sm btn-error join-item w-fit" @click="deleteInstitution">Delete</button>
+                </div>
             </div>
         </div>
     </CardBase>
