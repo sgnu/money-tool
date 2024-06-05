@@ -29,6 +29,7 @@
         </li>
         <li><NuxtLink to="/accounts">Accounts</NuxtLink></li>
         <li><NuxtLink to="/institutions">Institutions</NuxtLink></li>
+        <li><NuxtLink to="/transactions">Transactions</NuxtLink></li>
       </ul>
     </div>
   </div>
