@@ -9,9 +9,9 @@ export default defineEventHandler(async (event) => {
 
     const data = db.run(`
         INSERT INTO transactions (type, date, amount, primary_account, secondary_account)
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (?, DATE(?), ?, ?, ?)
         RETURNING *
-    `, [body.type, body.date, body.amount, body.primaryAccount, body.secondaryAccount])
+    `, [body.type, body.date.toISOString(), body.amount, body.primaryAccount, body.secondaryAccount])
 
     db.close()
 
