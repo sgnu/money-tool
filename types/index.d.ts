@@ -1,4 +1,4 @@
-export { Institution, Account }
+export {  }
 
 declare global {
     interface Institution {
@@ -16,5 +16,14 @@ declare global {
         institutionId: number,
         initialBalance: number,
         currentBalance: number,
+    }
+
+    interface Transaction {
+        id: number,
+        type: TransactionTypes,
+        date: Date,
+        amount: number,
+        primaryAccount: number,
+        secondaryAccount?: number,
     }
 }

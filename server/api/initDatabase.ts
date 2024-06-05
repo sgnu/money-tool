@@ -34,6 +34,7 @@ export default defineEventHandler((event) => {
             CREATE TABLE IF NOT EXISTS transactions (
                 id INTEGER PRIMARY KEY,
                 type TEXT NOT NULL,
+                date TEXT NOT NULL,
                 amount INTEGER NOT NULL,
                 primary_account INTEGER NOT NULL,
                 secondary_account INTEGER,
