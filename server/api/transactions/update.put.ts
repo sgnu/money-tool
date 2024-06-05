@@ -9,10 +9,10 @@ export default defineEventHandler(async (event) => {
 
     const data = db.run(`
         UPDATE institutions
-        SET type=?, date=DATE(?), amount=?, primary_account=?, secondary_account=?
+        SET name=?, type=?, date=DATE(?), amount=?, primary_account=?, secondary_account=?
         WHERE id=?
         RETURNING *
-    `, [body.type, body.date.toISOString(), body.amount, body.primaryAccount, body.secondaryAccount, body.id])
+    `, [body.name, body.type, body.date.toISOString(), body.amount, body.primaryAccount, body.secondaryAccount, body.id])
 
     db.close()
 

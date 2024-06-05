@@ -19,6 +19,7 @@ declare global {
     }
 
     interface Transaction {
+        name: string,
         id: number,
         type: TransactionTypes,
         date: Date,

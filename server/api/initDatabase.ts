@@ -33,6 +33,7 @@ export default defineEventHandler((event) => {
         db.run(`
             CREATE TABLE IF NOT EXISTS transactions (
                 id INTEGER PRIMARY KEY,
+                name TEXT,
                 type TEXT NOT NULL,
                 date TEXT NOT NULL,
                 amount INTEGER NOT NULL,
