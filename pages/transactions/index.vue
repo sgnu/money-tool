@@ -15,8 +15,13 @@ $fetch('/api/accounts/getAllAccounts', {
 })
 </script>
 
+<!-- TODO: represent transactions like a table -->
+
 <template>
-    <div class="flex flex-col">
+    <div v-if="accountLoading || transactionLoading">
+        <div class="skeleton w-full h-12"></div>
+    </div>
+    <div class="flex flex-col" v-else>
         <TransactionCard v-for="transaction in transactions" :transaction="transaction as unknown as Transaction" :primary-account="accountMap.get(transaction.primaryAccount)" :secondary-account="accountMap.get(transaction.secondaryAccount)"/>
         <NuxtLink class="btn btn-outline btn-primary" to="/transactions/new">New</NuxtLink>
     </div>
