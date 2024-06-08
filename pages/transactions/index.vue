@@ -18,5 +18,6 @@ $fetch('/api/accounts/getAllAccounts', {
 <template>
     <div class="flex flex-col">
         <TransactionCard v-for="transaction in transactions" :transaction="transaction as unknown as Transaction" :primary-account="accountMap.get(transaction.primaryAccount)" :secondary-account="accountMap.get(transaction.secondaryAccount)"/>
+        <NuxtLink class="btn btn-outline btn-primary" to="/transactions/new">New</NuxtLink>
     </div>
 </template>
