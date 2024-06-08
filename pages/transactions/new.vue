@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import { TransactionTypes } from '~/types/TransactionTypes'
+import { TransactionTypes } from '~/types/TransactionTypes'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -21,7 +21,7 @@ const accountMap = new Map();
 const formData = reactive({
     name: '',
     type: null,
-    date: null,
+    date: '',
     amount: null,
     primaryAccount: null,
     secondaryAccount: null
@@ -31,11 +31,13 @@ const submit = () => {
     const tempTransaction = {
         name: formData.name,
         type: formData.type,
-        date: formData.date,
+        date: new Date(formData.date),
         amount: formData.amount,
-        primaryAccount: accountMap.get(formData.primaryAccount),
-        secondaryAccount: accountMap.get(formData.secondaryAccount)
+        primaryAccount: formData.primaryAccount,
+        secondaryAccount: formData.secondaryAccount
     }
+
+    console.log(tempTransaction)
 
     $fetch('/api/transactions/create', {
         method: 'POST',
@@ -62,19 +64,24 @@ const submit = () => {
                     Name
                     <input type="text" class="grow" v-model="formData.name" />
                 </label>
-                <VueDatePicker v-model="formData.date" :dark="true" :enable-time-picker="false" auto-apply model-type="iso" placeholder="Date" />
+                <select class="select select-bordered w-full max-w-xs" v-model="formData.type">
+                    <option disabled selected>Type</option>
+                    <option v-for="type in TransactionTypes">{{ type }}</option>
+                </select>
+                <VueDatePicker v-model="formData.date" :dark="true" :enable-time-picker="false" auto-apply placeholder="Date" />
                 <label class="input input-bordered flex items-center gap-2 w-full">
                     Amount
                     <input type="text" class="grow" v-model="formData.amount" />
                 </label>
                 <select class="select select-bordered w-full max-w-xs" v-model="formData.primaryAccount">
                     <option disabled selected>Primary Account</option>
-                    <option v-for="account in (accounts)">{{ account.name }} ...{{ account.accountNumber }}</option>
+                    <option v-for="account in (accounts)" :value="account.id">{{ account.name }} ...{{ account.accountNumber }}</option>
                 </select>
                 <select class="select select-bordered w-full max-w-xs" v-model="formData.secondaryAccount">
                     <option disabled selected>Secondary Account</option>
-                    <option v-for="account in (accounts)">{{ account.name }} ..{{ account.accountNumber }}</option>
+                    <option v-for="account in (accounts)" :value="account.id">{{ account.name }} ..{{ account.accountNumber }}</option>
                 </select>
+                <input type="submit" class="btn btn-primary" @submit="submit">
             </FormCard>
         </Transition>
     </div>
