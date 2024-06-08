@@ -45,13 +45,3 @@ function sqlCall() {
 
     return promise
 }
-
-interface SQLAccount {
-    account_number: number,
-    account_type: string,
-    current_balance: number,
-    id: number,
-    initial_balance: number,
-    institution_id: number,
-    name: string,
-}
