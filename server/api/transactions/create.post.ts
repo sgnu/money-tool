@@ -1,6 +1,7 @@
 import { createRequire } from 'module'
 import { AccountTypes } from '~/types/AccountTypes'
 import { TransactionTypes } from '~/types/TransactionTypes'
+import convertSQLAccount from '~/utils/convertSQLAccount'
 
 export default defineEventHandler(async (event) => {
     const require = createRequire(import.meta.url)
@@ -24,13 +25,13 @@ export default defineEventHandler(async (event) => {
                 UPDATE accounts
                 SET current_balance=?
                 WHERE id=?
-            `, [primaryAccount.current_balance - body.amount, primaryAccount.id])
+            `, [primaryAccount.currentBalance - body.amount, primaryAccount.id])
 
             db.run(`
                 UPDATE accounts
                 SET current_balance=?
                 WHERE id=?
-            `, [secondaryAccount.current_balance + body.amount, secondaryAccount.id])
+            `, [secondaryAccount.currentBalance + body.amount, secondaryAccount.id])
         } else {
             return null
         }
@@ -54,12 +55,12 @@ async function getAccount(accountId: number | undefined, db: any) {
         db.get(`
             SELECT * FROM accounts
             WHERE id=?
-        `, [accountId], (err: any, row: Account | null) => {
+        `, [accountId], (err: any, row: SQLAccount | null) => {
             if (err) {
                 reject(err)
             }
 
-            resolve(row)
+            resolve(convertSQLAccount(row))
         })
     })
 
