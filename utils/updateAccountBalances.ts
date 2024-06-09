@@ -20,6 +20,19 @@ export default function(primaryAccount: Account | null, secondaryAccount: Accoun
                     return true
                 }
         }
+    } else if (transactionType === TransactionTypes.INCOME) {
+        // Income should be directly into a checking or savings account
+        // should only be primary account
+        // Add to primary
+        if (tempPrimaryAccount !== null && tempSecondaryAccount === null) {
+            if (tempPrimaryAccount.accountType === AccountTypes.CHECKINGS || tempPrimaryAccount.accountType === AccountTypes.SAVINGS) {
+                tempPrimaryAccount.currentBalance += balanceChange
+
+                sendFetch(tempPrimaryAccount)
+
+                return true
+            }
+        }
     }
 
     // Return value should be denote success
