@@ -2,6 +2,7 @@ import { createRequire } from 'module'
 import { AccountTypes } from '~/types/AccountTypes'
 import { TransactionTypes } from '~/types/TransactionTypes'
 import convertSQLAccount from '~/utils/convertSQLAccount'
+import updateAccountBalances from '~/utils/updateAccountBalances'
 
 export default defineEventHandler(async (event) => {
     const require = createRequire(import.meta.url)
@@ -13,29 +14,7 @@ export default defineEventHandler(async (event) => {
     const primaryAccount: Account | null = await getAccount(body.primaryAccount, db)
     const secondaryAccount: Account | null = await getAccount(body.secondaryAccount, db)
 
-    console.log(primaryAccount)
-
-    if (body.type === TransactionTypes.TRANSFER) {
-        // Transfers should only be between checkings and savings accounts
-        // and should have both primary and secondary.
-        // TODO: add check that accounts are the right type
-        // Subtract from primary; add to secondary
-        if (primaryAccount !== null && secondaryAccount !== null) {
-            db.run(`
-                UPDATE accounts
-                SET current_balance=?
-                WHERE id=?
-            `, [primaryAccount.currentBalance - body.amount, primaryAccount.id])
-
-            db.run(`
-                UPDATE accounts
-                SET current_balance=?
-                WHERE id=?
-            `, [secondaryAccount.currentBalance + body.amount, secondaryAccount.id])
-        } else {
-            return null
-        }
-    }
+    updateAccountBalances(primaryAccount, secondaryAccount, body.type, body.amount)
 
     const date = new Date(body.date).toISOString()
 
