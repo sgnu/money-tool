@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const route = useRoute()
 const { data: institutionData } = await useFetch(`/api/institutions/${route.params.id}`)
-const institution:Institution = institutionData.value[0]
+const institution:Institution = institutionData.value as Institution
 </script>
 
 <template>

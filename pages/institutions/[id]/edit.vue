@@ -10,7 +10,7 @@ let formData = reactive({
 
 await useFetch(`/api/institutions/${route.params.id}`, {
     onResponse({ response }) {
-        formData = response._data[0] as Institution
+        formData = response._data as Institution
     }
 })
 

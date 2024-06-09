@@ -7,17 +7,17 @@ export default defineEventHandler(async (event) => {
 
     const id = getRouterParam(event, 'id')
 
-    const promise = new Promise<Account[]>((resolve, reject) => {
-        db.all(`
+    const promise = new Promise<Account>((resolve, reject) => {
+        db.get(`
             SELECT * FROM accounts
             WHERE ID = ?
         `, [id],
-        (err:any, rows: any) => {
+        (err:any, row: any) => {
             if (err) {
                 reject(err)
             }
 
-            resolve(rows)
+            resolve(row)
         })
     })
 
