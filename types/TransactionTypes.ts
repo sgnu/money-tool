@@ -3,5 +3,6 @@ export enum TransactionTypes {
     PAYMENT = "Payment",
     INCOME = "Income",
     INTEREST = "Interest",
-    ADJUSTMENT = "Adjustment"
+    ADJUSTMENT = "Adjustment",
+    PURCHASE = "Purchase"
 }
