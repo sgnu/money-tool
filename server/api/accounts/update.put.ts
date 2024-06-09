@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     const body:Account = await readBody(event)
 
     const data = db.run(`
-        UPDATE institutions
+        UPDATE accounts
         SET name=?, account_number=?, account_type=?, institution_id=?, initial_balance=?, current_balance=?
         WHERE id=?
         RETURNING *
