@@ -62,6 +62,21 @@ export default function(primaryAccount: Account | null, secondaryAccount: Accoun
 
             return true
         }
+    } else if (transactionType === TransactionTypes.PURCHASE) {
+        // Purchase should be made with checkings, savings, or credit accounts
+        // Should only be primary account
+        // Subtract from primary if checkings or savings; add to credit
+        if (tempPrimaryAccount !== null && tempSecondaryAccount === null) {
+            if (tempPrimaryAccount.accountType === AccountTypes.CHECKINGS || tempPrimaryAccount.accountType === AccountTypes.SAVINGS) {
+                tempPrimaryAccount.currentBalance -= balanceChange
+            } else if (tempPrimaryAccount.accountType === AccountTypes.CREDIT) {
+                tempPrimaryAccount.currentBalance += balanceChange
+            }
+
+            sendFetch(tempPrimaryAccount)
+
+            return true
+        }
     }
 
     // Return value should be denote success
