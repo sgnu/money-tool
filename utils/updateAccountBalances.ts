@@ -6,7 +6,7 @@ export default function(primaryAccount: Account | null, secondaryAccount: Accoun
     const tempSecondaryAccount = secondaryAccount
     if (transactionType === TransactionTypes.TRANSFER) {
         // Transfers should only be between checkings and savings accounts
-        // and should have both primary and secondary accounts.
+        // Should have both primary and secondary accounts.
         // Subtract from primary; add to secondary
         if (tempPrimaryAccount !== null && tempSecondaryAccount !== null) {
             if ((tempPrimaryAccount.accountType === AccountTypes.CHECKINGS || tempPrimaryAccount.accountType === AccountTypes.SAVINGS) &&
@@ -22,10 +22,28 @@ export default function(primaryAccount: Account | null, secondaryAccount: Accoun
         }
     } else if (transactionType === TransactionTypes.INCOME) {
         // Income should be directly into a checking or savings account
-        // should only be primary account
+        // Should only be primary account
         // Add to primary
         if (tempPrimaryAccount !== null && tempSecondaryAccount === null) {
             if (tempPrimaryAccount.accountType === AccountTypes.CHECKINGS || tempPrimaryAccount.accountType === AccountTypes.SAVINGS) {
+                tempPrimaryAccount.currentBalance += balanceChange
+
+                sendFetch(tempPrimaryAccount)
+
+                return true
+            }
+        }
+    } else if (transactionType === TransactionTypes.INTEREST) {
+        // Interest should be directly into a checking, savings, credit, or liability account
+        // Should only be primary account
+        // Add to primary
+        if (tempPrimaryAccount !== null && tempSecondaryAccount === null) {
+            if (
+                tempPrimaryAccount.accountType === AccountTypes.CHECKINGS ||
+                tempPrimaryAccount.accountType === AccountTypes.SAVINGS ||
+                tempPrimaryAccount.accountType === AccountTypes.CREDIT ||
+                tempPrimaryAccount.accountType === AccountTypes.LIABILITY
+            ) {
                 tempPrimaryAccount.currentBalance += balanceChange
 
                 sendFetch(tempPrimaryAccount)
