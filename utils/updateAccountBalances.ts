@@ -51,6 +51,17 @@ export default function(primaryAccount: Account | null, secondaryAccount: Accoun
                 return true
             }
         }
+    } else if (transactionType === TransactionTypes.ADJUSTMENT) {
+        // Adjustment directly changes current balance
+        // Should only be primary account
+        // Set primary to balance
+        if (tempPrimaryAccount !== null && tempSecondaryAccount === null) {
+            tempPrimaryAccount.currentBalance = balanceChange
+
+            sendFetch(tempPrimaryAccount)
+
+            return true
+        }
     }
 
     // Return value should be denote success
