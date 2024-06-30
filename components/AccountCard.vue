@@ -18,7 +18,7 @@ const props = defineProps<{
 <template>
   <CardBase>
     <div class="card-body">
-      <NuxtLink class="card-title" to="/">
+      <NuxtLink class="card-title" :to="`/accounts/${account.id}`">
         <h2>
           <img :src="institution.icon" class="w-8 h-8 inline">
           {{ account.name }} {{ account.accountNumber }}
