@@ -9,7 +9,7 @@ const { data: accounts } = await useFetch('/api/accounts', {
     onResponse() {
         setTimeout(() => {
             isLoading.value = false
-        }, 250)
+        }, useRuntimeConfig().minimumLoading)
     }
 })
 

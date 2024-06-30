@@ -15,7 +15,7 @@ const submit = () => {
             setTimeout(() => {
                 isLoading.value = false
                 navigateTo('/institutions')
-            }, 250)
+            }, useRuntimeConfig().minimumLoading)
         }
     })
 }

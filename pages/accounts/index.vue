@@ -11,7 +11,7 @@ $fetch('/api/institutions', {
         })
         setTimeout(() => {
             institutionLoading.value = false
-        }, 500)
+        }, useRuntimeConfig().minimumLoading)
     }
 })
 
