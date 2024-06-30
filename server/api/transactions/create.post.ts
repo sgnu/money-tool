@@ -18,15 +18,22 @@ export default defineEventHandler(async (event) => {
 
     const date = new Date(body.date).toISOString()
 
-    const data = db.run(`
-        INSERT INTO transactions (name, type, date, amount, primary_account, secondary_account)
-        VALUES (?, ?, DATE(?), ?, ?, ?)
-        RETURNING *
-    `, [body.name, body.type, date, body.amount, body.primaryAccount, body.secondaryAccount])
+    if (secondaryAccount) {
+        db.run(`
+            INSERT INTO transactions (name, type, date, amount, primary_account, secondary_account)
+            VALUES (?, ?, DATE(?), ?, ?, ?)
+            RETURNING *
+        `, [body.name, body.type, date, body.amount, body.primaryAccount, body.secondaryAccount])
+    } else {
+        db.run(`
+            INSERT INTO transactions (name, type, date, amount, primary_account)
+            VALUES (?, ?, DATE(?), ?, ?)
+            RETURNING *
+        `, [body.name, body.type, date, body.amount, body.primaryAccount])
+    }
+
 
     db.close()
-
-    return data
 })
 
 async function getAccount(accountId: number | undefined, db: any) {
@@ -39,7 +46,11 @@ async function getAccount(accountId: number | undefined, db: any) {
                 reject(err)
             }
 
-            resolve(convertSQLAccount(row))
+            try {
+                resolve(convertSQLAccount(row))
+            } catch {
+                resolve(null)
+            }
         })
     })
 
