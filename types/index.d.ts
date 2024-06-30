@@ -37,4 +37,14 @@ declare global {
         primaryAccount: number,
         secondaryAccount?: number,
     }
+
+    interface SQLTransaction {
+    id: number,
+    name: string,
+    type: string,
+    date: string,
+    amount: number,
+    primary_account: number,
+    secondary_account: number
+}
 }
