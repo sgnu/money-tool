@@ -23,7 +23,6 @@ function sqlCall() {
 
             rows.forEach((account: SQLAccount) => {
                 const tempAccount = convertSQLAccount(account)
-                console.log(tempAccount)
                 if (tempAccount) {
                     tempArray.push(tempAccount)
                 }
