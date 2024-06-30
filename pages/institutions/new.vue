@@ -8,7 +8,7 @@ const formData = reactive({
 
 const submit = () => {
     isLoading.value = true
-    $fetch('/api/institutions/create', {
+    $fetch('/api/institutions', {
         method: 'POST',
         body: formData,
         onResponse() {

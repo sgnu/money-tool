@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const accountMap = ref(new Map())
 let accountLoading = ref(true)
-const { data: transactions, pending: transactionLoading } = useFetch('/api/transactions/getAllTransactions')
+const { data: transactions, pending: transactionLoading } = useFetch('/api/transactions')
 
-$fetch('/api/accounts/getAllAccounts', {
+$fetch('/api/accounts', {
     onResponse({ response }) {
         (response._data as any[]).forEach((account: Account) => {
             accountMap.value.set(account.id, account)

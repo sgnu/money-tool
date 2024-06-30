@@ -5,7 +5,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 let isLoading = ref(true)
 
-const { data: accounts } = await useFetch('/api/accounts/getAllAccounts', {
+const { data: accounts } = await useFetch('/api/accounts', {
     onResponse() {
         setTimeout(() => {
             isLoading.value = false
@@ -39,7 +39,7 @@ const submit = () => {
 
     console.log(tempTransaction)
 
-    $fetch('/api/transactions/create', {
+    $fetch('/api/transactions', {
         method: 'POST',
         body: tempTransaction,
         onResponse() {

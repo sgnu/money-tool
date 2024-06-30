@@ -2,7 +2,7 @@
 import { AccountTypes } from '~/types/AccountTypes';
 let isLoading = ref(true)
 
-const { data: institutions } = await useFetch('/api/institutions/getAllInstitutions', {
+const { data: institutions } = await useFetch('/api/institutions', {
     onResponse() {
         setTimeout(() => {
             isLoading.value = false
@@ -36,7 +36,7 @@ const submit = () => {
 
     console.log(tempAccount)
 
-    $fetch('/api/accounts/create', {
+    $fetch('/api/accounts', {
         method: 'POST',
         body: tempAccount,
         onResponse() {

@@ -15,7 +15,7 @@ await useFetch(`/api/institutions/${route.params.id}`, {
 })
 
 const submit = () => {
-    $fetch('/api/institutions/update', {
+    $fetch('/api/institutions', {
         method: 'PUT',
         body: formData,
         onResponse() {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const institutionMap = ref(new Map())
 let institutionLoading = ref(true)
-const { data: accounts, pending: accountLoading } = useFetch('/api/accounts/getAllAccounts', {
+const { data: accounts, pending: accountLoading } = useFetch('/api/accounts', {
 })
 
-$fetch('/api/institutions/getAllInstitutions', {
+$fetch('/api/institutions', {
     onResponse({ response }) {
         (response._data as any[]).forEach((institution: Institution) => {
             institutionMap.value.set(institution.id, institution)
