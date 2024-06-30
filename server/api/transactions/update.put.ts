@@ -1,4 +1,6 @@
 import { createRequire } from 'module'
+import { TransactionTypes } from '~/types/TransactionTypes'
+import updateAccountBalances from '~/utils/updateAccountBalances'
 
 export default defineEventHandler(async (event) => {
     const require = createRequire(import.meta.url)
@@ -7,12 +9,31 @@ export default defineEventHandler(async (event) => {
 
     const body:Transaction = await readBody(event)
 
+    const primaryAccount: Account | null = await $fetch(`/api/accounts/${body.primaryAccount}`)
+    const secondaryAccount: Account | null = await $fetch(`/api/accounts/${body.secondaryAccount}`)
+
+    // get previous transaction to calculate difference
+    const oldTransaction = await $fetch(`/api/transactions/${body.id}`)
+
+    let difference = 0
+    if (body.type === TransactionTypes.ADJUSTMENT) {
+        // adjustments change account balance to an absolute value rather than relatively
+        difference = body.amount
+    } else {
+        difference = body.amount - oldTransaction.amount
+    }
+    
+    updateAccountBalances(primaryAccount, secondaryAccount, body.type, difference)
+
+    // updating transaction should not change accounts
+    // too annoying to handle anything besides changing amount
+    // user should delete transaction then create new transaction
     const data = db.run(`
-        UPDATE institutions
-        SET name=?, type=?, date=DATE(?), amount=?, primary_account=?, secondary_account=?
+        UPDATE transactions
+        SET amount=?
         WHERE id=?
         RETURNING *
-    `, [body.name, body.type, body.date.toISOString(), body.amount, body.primaryAccount, body.secondaryAccount, body.id])
+    `, [body.amount, body.id])
 
     db.close()
 
