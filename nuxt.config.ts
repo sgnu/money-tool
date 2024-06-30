@@ -17,5 +17,8 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: ['@vuepic/vue-datepicker']
+  },
+  runtimeConfig: {
+    minimumLoading: 333
   }
 })
