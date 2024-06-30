@@ -9,6 +9,10 @@ const props = defineProps<{
   const isLiability = computed(() => {
     return props.account.accountType === AccountTypes.CREDIT || props.account.accountType === AccountTypes.LIABILITY
   })
+
+  const balance = computed(() => {
+    return props.account.currentBalance.toLocaleString(undefined, {minimumFractionDigits: 2})
+  })
 </script>
 
 <template>
@@ -20,8 +24,8 @@ const props = defineProps<{
           {{ account.name }} {{ account.accountNumber }}
         </h2>
       </NuxtLink>
-      <p v-if="isLiability" class="text-right">$({{ account.currentBalance }})</p>
-      <p v-else class="text-right">${{ account.currentBalance }}</p>
+      <p v-if="isLiability" class="text-right">$({{ balance }})</p>
+      <p v-else class="text-right">${{ balance }}</p>
     </div>
   </CardBase>
 </template>
