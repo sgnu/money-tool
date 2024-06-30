@@ -1,4 +1,5 @@
 import { createRequire } from 'module'
+import convertSQLAccount from '~/utils/convertSQLAccount'
 
 export default eventHandler(async () => {
     const accountData: any = await sqlCall()
@@ -24,7 +25,7 @@ function sqlCall() {
     const sqlite3 = require('sqlite3').verbose()
     const db = new sqlite3.Database('./data/data.db')
 
-    const promise = new Promise((resolve, reject) => {
+    const promise = new Promise<Account[]>((resolve, reject) => {
         db.all(`
             SELECT * FROM accounts
             ORDER BY id ASC
@@ -33,7 +34,16 @@ function sqlCall() {
                 reject(err)
             }
 
-            resolve(rows)
+            const tempArray: Account[] = []
+
+            rows.forEach((account: SQLAccount) => {
+                const tempAccount = convertSQLAccount(account)
+                if (tempAccount) {
+                    tempArray.push(tempAccount)
+                }
+            })
+
+            resolve(tempArray)
         })
     })
 
