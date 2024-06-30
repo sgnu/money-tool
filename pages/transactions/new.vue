@@ -3,19 +3,21 @@ import { TransactionTypes } from '~/types/TransactionTypes'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
+const route = useRoute()
 let isLoading = ref(true)
+const accounts = ref<Account[]>([])
+const accountMap = ref(new Map<number, Account>())
 
-const { data: accounts } = await useFetch('/api/accounts', {
-    onResponse() {
+await $fetch('/api/accounts', {
+    onResponse({ response }) {
+        response._data.forEach((account: Account) => {
+            accounts.value.push(account)
+            accountMap.value.set(account.id, account)
+        })
         setTimeout(() => {
             isLoading.value = false
-        }, useRuntimeConfig().minimumLoading)
+        }, 250)
     }
-})
-
-const accountMap = new Map();
-(accounts.value as any).forEach((tempAccount: Account) => {
-    accountMap.set(tempAccount.name, tempAccount.id)
 })
 
 const formData = reactive({
@@ -26,6 +28,17 @@ const formData = reactive({
     primaryAccount: null,
     secondaryAccount: null
 })
+
+// ignore errors here
+if (route.query.primaryAccount) {
+    formData.primaryAccount = route.query.primaryAccount
+}
+if (route.query.secondaryAccount) {
+    formData.secondaryAccount = route.query.secondaryAccount
+}
+if (route.query.type) {
+    formData.type = route.query.type
+}
 
 const submit = () => {
     const tempTransaction = {
