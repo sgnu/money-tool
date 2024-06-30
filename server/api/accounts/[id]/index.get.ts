@@ -1,4 +1,5 @@
 import { createRequire } from 'module'
+import convertSQLAccount from '~/utils/convertSQLAccount'
 
 export default defineEventHandler(async (event) => {
     const require = createRequire(import.meta.url)
@@ -12,12 +13,18 @@ export default defineEventHandler(async (event) => {
             SELECT * FROM accounts
             WHERE ID = ?
         `, [id],
-        (err:any, row: any) => {
+        (err:any, row: SQLAccount) => {
             if (err) {
                 reject(err)
             }
 
-            resolve(row)
+            const account = convertSQLAccount(row)
+
+            if (account) {
+                resolve(account)
+            } else {
+                reject(null)
+            }
         })
     })
 
