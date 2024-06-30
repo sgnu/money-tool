@@ -1,5 +1,6 @@
 import { createRequire } from 'module'
 import { TransactionTypes } from '~/types/TransactionTypes'
+import convertSQLAccount from '~/utils/convertSQLAccount'
 import updateAccountBalances from '~/utils/updateAccountBalances'
 
 export default defineEventHandler(async (event) => {
@@ -9,8 +10,8 @@ export default defineEventHandler(async (event) => {
 
     const body:Transaction = await readBody(event)
 
-    const primaryAccount: Account | null = await $fetch(`/api/accounts/${body.primaryAccount}`)
-    const secondaryAccount: Account | null = await $fetch(`/api/accounts/${body.secondaryAccount}`)
+    const primaryAccount: Account | null = convertSQLAccount(await $fetch(`/api/accounts/${body.primaryAccount}`))
+    const secondaryAccount: Account | null = convertSQLAccount(await $fetch(`/api/accounts/${body.secondaryAccount}`))
 
     // get previous transaction to calculate difference
     const oldTransaction = await $fetch(`/api/transactions/${body.id}`)
@@ -22,7 +23,7 @@ export default defineEventHandler(async (event) => {
     } else {
         difference = body.amount - oldTransaction.amount
     }
-    
+
     updateAccountBalances(primaryAccount, secondaryAccount, body.type, difference)
 
     // updating transaction should not change accounts
