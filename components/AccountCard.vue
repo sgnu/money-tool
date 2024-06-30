@@ -11,7 +11,7 @@ const props = defineProps<{
   })
 
   const balance = computed(() => {
-    return props.account.currentBalance.toLocaleString(undefined, {minimumFractionDigits: 2})
+    return formatMoney(props.account.currentBalance)
   })
 </script>
 
