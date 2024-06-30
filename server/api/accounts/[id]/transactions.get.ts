@@ -58,6 +58,8 @@ export default defineEventHandler(async(event) => {
         })
     })
 
+    db.close()
+
     const transactionsArray:Transaction[] = (await primaryAccounts).concat(await secondaryAccounts)
 
     transactionsArray.sort((a, b) => {
