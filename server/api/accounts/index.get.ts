@@ -2,22 +2,7 @@ import { createRequire } from 'module'
 import convertSQLAccount from '~/utils/convertSQLAccount'
 
 export default eventHandler(async () => {
-    const accountData: any = await sqlCall()
-    const accounts: Account[] = []
-
-    accountData.forEach((account: SQLAccount) => {
-        const newAccount: Account = {
-            id: account.id,
-            name: account.name,
-            accountNumber: account.account_number,
-            accountType: account.account_type,
-            institutionId: account.institution_id,
-            initialBalance: account.initial_balance,
-            currentBalance: account.current_balance
-        }
-        accounts.push(newAccount)
-    })
-    return accounts
+    return await sqlCall()
 })
 
 function sqlCall() {
@@ -38,6 +23,7 @@ function sqlCall() {
 
             rows.forEach((account: SQLAccount) => {
                 const tempAccount = convertSQLAccount(account)
+                console.log(tempAccount)
                 if (tempAccount) {
                     tempArray.push(tempAccount)
                 }
