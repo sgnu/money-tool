@@ -12,7 +12,7 @@
           </label>
         </div>
       </div>
-    <div class="pt-4 lg:pt-16 px-4">
+    <div class="pt-4 lg:pt-16 pb-8 px-4 sm:px-24">
       <NuxtPage />
     </div>
     </div>

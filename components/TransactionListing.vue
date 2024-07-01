@@ -35,10 +35,13 @@ const date = computed(() => {
 </script>
 
 <template>
+    <!-- TODO: fix text overflow when really narrow screen or long title -->
     <div class="flex flex-wrap">
-        <h2 class="basis-auto grow font-semibold" v-if="transaction.name.length > 0">{{ transaction.name }}</h2>
-        <h2 class="basis-auto grow italic text-neutral-300" v-else>Unnamed Transaction</h2>
-        <p>...{{ primaryAccount.accountNumber }} <span v-if="secondaryAccount"> to ...{{ secondaryAccount.accountNumber }}</span></p>
+        <div class="flex w-full">
+            <h2 class="basis-auto grow font-semibold text-ellipsis" v-if="transaction.name.length > 0">{{ transaction.name }}</h2>
+            <h2 class="basis-auto grow italic text-neutral-300 text-ellipsis" v-else>Unnamed Transaction</h2>
+            <p>...{{ primaryAccount.accountNumber }} <span v-if="secondaryAccount"> to ...{{ secondaryAccount.accountNumber }}</span></p>
+        </div>
         <FlexBreak />
         <p class="basis-auto grow">{{ date }}</p>
         <p :class="amountClasses">{{ transaction.type }} ${{ amount }}</p>
