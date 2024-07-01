@@ -56,7 +56,6 @@ const createTransaction = (type?: TransactionTypes) => {
         queries.type = type
     }
     
-    //TODO: finish handlings for types
     if (type === TransactionTypes.ADJUSTMENT) {
         queries.primaryAccount = account.id
     } else if (type === TransactionTypes.INCOME) {
@@ -69,8 +68,9 @@ const createTransaction = (type?: TransactionTypes) => {
         } else {
             queries.primaryAccount = account.id
         }
-    }
-    else if (type === TransactionTypes.TRANSFER) {
+    } else if (type === TransactionTypes.PURCHASE) {
+        queries.primaryAccount = account.id
+    } else if (type === TransactionTypes.TRANSFER) {
         queries.primaryAccount = account.id
     }
 
@@ -125,7 +125,6 @@ const createTransaction = (type?: TransactionTypes) => {
             <NuxtLink class="btn btn-outline text-lg" :to="`/accounts/${route.params.id}/edit`">Edit</NuxtLink>
             <button class="btn btn-outline btn-error w-fit text-lg" @click="deleteAccount">Delete</button>
             <FlexBreak />
-            <!-- TODO: change to drop down when small -->
             <div class="join hidden xl:block xl:join-horizontal">
                 <button @click="createTransaction()" class="btn btn-outline btn-sm btn-primary join-item">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
