@@ -85,7 +85,7 @@ export default function(primaryAccount: Account | null, secondaryAccount: Accoun
 }
 
 async function sendFetch(account: Account) {
-    await $fetch('/api/accounts/update', {
+    await $fetch('/api/accounts', {
         method: 'PUT',
         body: account
     })
