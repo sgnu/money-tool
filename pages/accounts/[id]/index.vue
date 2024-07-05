@@ -115,7 +115,7 @@ const createTransaction = (type?: TransactionTypes) => {
                     New
                 </div>
                 <ul tabindex="0" class="menu dropdown-content shadow join join-vertical w-52 mt-2 p-0 z-[999]">
-                    <button @click="createTransaction()" class="btn btn-sm justify-start font-normal join-item">
+                    <button @click="createTransaction()" class="btn justify-start font-normal join-item">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -123,7 +123,7 @@ const createTransaction = (type?: TransactionTypes) => {
                         Transaction
                     </button>
                     <button v-for="transactionType in defaultTransactions" @click="createTransaction(transactionType)"
-                        class="btn btn-sm btn-neutral join-item justify-start">
+                        class="btn btn-neutral join-item font-normal justify-start">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -155,7 +155,7 @@ const createTransaction = (type?: TransactionTypes) => {
 
         <div class="divider" />
 
-        <div class="flex flex-col gap-1 bg-neutral shadow-xl py-6 rounded-lg max-w-[960px]" v-if="transactions.length > 0">
+        <div class="flex flex-col gap-1 bg-neutral shadow-xl py-6 rounded-lg max-w-[960px] mx-auto" v-if="transactions.length > 0">
             <template v-for="transaction in transactions">
                 <TransactionListing class="px-8" :transaction="transaction"
                     :primary-account="accountMap.get(transaction.primaryAccount)"
