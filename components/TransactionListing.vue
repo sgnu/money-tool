@@ -39,7 +39,7 @@ const date = computed(() => {
     <!-- TODO: fix text overflow when really narrow screen or long title -->
     <div class="flex flex-wrap">
         <div class="flex w-full">
-            <h2 class="basis-auto font-semibold text-nowrap text-ellipsis" v-if="transaction.name.length > 0">{{ transaction.name }}</h2>
+            <h2 class="basis-auto font-semibold text-nowrap text-ellipsis" v-if="transaction.name && transaction.name.length > 0">{{ transaction.name }}</h2>
             <h2 class="basis-auto italic text-neutral-300 text-nowrap text-ellipsis" v-else>Unnamed Transaction</h2>
             <p class="ml-auto text-nowrap">...{{ primaryAccount.accountNumber }} <span v-if="secondaryAccount"> to ...{{ secondaryAccount.accountNumber }}</span></p>
         </div>
