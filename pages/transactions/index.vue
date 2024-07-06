@@ -21,7 +21,7 @@ $fetch('/api/accounts', {
     <div v-if="accountLoading || transactionLoading">
         <div class="skeleton w-full h-12"></div>
     </div>
-    <div class="flex flex-col bg-neutral shadow-xl px-4 py-2 gap-2 rounded-lg" v-else>
+    <div class="flex flex-col bg-base-200 shadow-xl px-4 py-2 gap-2 rounded-lg" v-else>
         <div v-for="transaction in transactions">
         <TransactionListing :transaction="transaction as unknown as Transaction"
             :primary-account="accountMap.get(transaction.primaryAccount)"

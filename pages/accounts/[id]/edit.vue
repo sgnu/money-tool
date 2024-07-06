@@ -102,7 +102,7 @@ const submit = () => {
             </FormCard>
             <FormCard v-else @submit.prevent="submit">
                 <h1 class="text-center text-2xl w-full">Edit Account</h1>
-                <select class="select select-bordered w-full max-w-xs" v-model="formData.institution">
+                <select class="select select-bordered w-full" v-model="formData.institution">
                     <option disabled selected>Institution</option>
                     <option v-for="institution in (institutions as Institution[])">{{ institution.name }}</option>
                 </select>
@@ -114,7 +114,7 @@ const submit = () => {
                     Account #
                     <input type="text" inputmode="numeric" pattern="\d*" class="grow"  title="Numbers only" v-model="formData.accountNumber">
                 </FormLabel>
-                <select class="select select-bordered w-full max-w-xs" v-model="formData.accountType">
+                <select class="select select-bordered w-full" v-model="formData.accountType">
                     <option disabled selected>Account Type</option>
                     <option v-for="type in AccountTypes">{{ type }}</option>
                 </select>

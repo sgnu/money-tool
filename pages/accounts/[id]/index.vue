@@ -155,7 +155,7 @@ const createTransaction = (type?: TransactionTypes) => {
 
         <div class="divider" />
 
-        <div class="flex flex-col gap-1 bg-neutral shadow-xl py-6 rounded-lg max-w-[960px] mx-auto" v-if="transactions.length > 0">
+        <div class="flex flex-col gap-1 bg-base-200 shadow-xl py-6 rounded-lg max-w-[960px] mx-auto" v-if="transactions.length > 0">
             <template v-for="transaction in transactions">
                 <TransactionListing class="px-8" :transaction="transaction"
                     :primary-account="accountMap.get(transaction.primaryAccount)"

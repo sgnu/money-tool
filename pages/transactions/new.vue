@@ -22,22 +22,21 @@ await $fetch('/api/accounts', {
 
 const formData = reactive({
     name: '',
-    type: null,
+    type: <TransactionTypes | null> null,
     date: '',
     amount: null,
-    primaryAccount: null,
-    secondaryAccount: null
+    primaryAccount: <string | null> null,
+    secondaryAccount: <string | null> null
 })
 
-// ignore errors here
 if (route.query.primaryAccount) {
-    formData.primaryAccount = route.query.primaryAccount
+    formData.primaryAccount = route.query.primaryAccount as string
 }
 if (route.query.secondaryAccount) {
-    formData.secondaryAccount = route.query.secondaryAccount
+    formData.secondaryAccount = route.query.secondaryAccount as string
 }
 if (route.query.type) {
-    formData.type = route.query.type
+    formData.type = route.query.type as TransactionTypes
 }
 
 const submit = () => {
@@ -77,7 +76,7 @@ const submit = () => {
                     Name
                     <input type="text" class="grow" v-model="formData.name" />
                 </label>
-                <select class="select select-bordered w-full max-w-xs" v-model="formData.type">
+                <select class="select select-bordered w-full" v-model="formData.type">
                     <option disabled selected>Type</option>
                     <option v-for="type in TransactionTypes">{{ type }}</option>
                 </select>
@@ -86,11 +85,11 @@ const submit = () => {
                     Amount
                     <input type="text" class="grow" v-model="formData.amount" />
                 </label>
-                <select class="select select-bordered w-full max-w-xs" v-model="formData.primaryAccount">
+                <select class="select select-bordered w-full" v-model="formData.primaryAccount">
                     <option disabled selected>Primary Account</option>
                     <option v-for="account in (accounts)" :value="account.id">{{ account.name }} ...{{ account.accountNumber }}</option>
                 </select>
-                <select class="select select-bordered w-full max-w-xs" v-model="formData.secondaryAccount">
+                <select class="select select-bordered w-full" v-model="formData.secondaryAccount">
                     <option disabled selected>Secondary Account</option>
                     <option v-for="account in (accounts)" :value="account.id">{{ account.name }} ..{{ account.accountNumber }}</option>
                 </select>
