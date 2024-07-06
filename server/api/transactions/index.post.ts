@@ -18,12 +18,20 @@ export default defineEventHandler(async (event) => {
 
     const date = new Date(body.date).toISOString()
 
+    let name
+
+    if (body.name) {
+        name = body.name.length > 0 ? body.name : null
+    } else {
+        name = null
+    }
+
     if (secondaryAccount) {
         db.run(`
             INSERT INTO transactions (name, type, date, amount, primary_account, secondary_account)
             VALUES (?, ?, DATE(?), ?, ?, ?)
             RETURNING *
-        `, [body.name, body.type, date, body.amount, body.primaryAccount, body.secondaryAccount])
+        `, [name, body.type, date, body.amount, body.primaryAccount, body.secondaryAccount])
     } else {
         db.run(`
             INSERT INTO transactions (name, type, date, amount, primary_account)

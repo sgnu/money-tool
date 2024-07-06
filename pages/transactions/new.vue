@@ -19,7 +19,7 @@ await $fetch('/api/accounts', {
 })
 
 const formData = reactive({
-    name: '',
+    name: <string | null> null,
     type: <TransactionTypes | null> null,
     date: initDate(),
     amount: null,
