@@ -3,11 +3,15 @@ import { AccountTypes } from '~/types/AccountTypes';
 import { TransactionTypes } from '~/types/TransactionTypes';
 
 const route = useRoute()
+
 const accountMap = ref(new Map())
+const currentDate = new Date()
 let accountLoading = ref(true)
+
 const { data: accountData } = await useFetch(`/api/accounts/${route.params.id}`)
 const { data: transactionData, pending: transactionLoading } = await useFetch(`/api/accounts/${route.params.id}/transactions`)
 const { data: institutionData, pending: institutionLoading } = await useFetch(`/api/institutions/${accountData.value?.institutionId}`)
+const { data: currentMonthData } = await useFetch(`/api/accounts/${route.params.id}/transactions/${currentDate.getUTCFullYear()}/${currentDate.getUTCMonth() + 1}`)
 
 $fetch('/api/accounts', {
     onResponse({ response }) {
@@ -23,6 +27,7 @@ $fetch('/api/accounts', {
 const institution: Institution = institutionData.value as Institution
 const account: Account = accountData.value as Account
 const transactions: Transaction[] = transactionData.value as unknown as Transaction[]
+const currentMonth: Transaction[] = currentMonthData.value as unknown as Transaction[]
 
 const defaultTransactions = ref<TransactionTypes[]>([])
 
@@ -37,6 +42,37 @@ if (account.accountType === AccountTypes.CHECKINGS) {
 const balanceString = computed(() => {
     return isLiability() ? `(${formatMoney(account.currentBalance)})` : formatMoney(account.currentBalance)
 })
+
+function currentMonthCashFlow() {
+    if (currentMonth) {
+        let sum = 0
+        currentMonth.forEach(transaction => {
+            if (transaction.type === TransactionTypes.INCOME) {
+                sum += transaction.amount
+            } else if (transaction.type === TransactionTypes.INTEREST) {
+                sum += transaction.amount
+            } else if (transaction.type === TransactionTypes.PAYMENT) {
+                sum -= transaction.amount
+            } else if (transaction.type === TransactionTypes.PURCHASE) {
+                if (isLiability()) {
+                    sum += transaction.amount
+                } else {
+                    sum -= transaction.amount
+                }
+            } else if (transaction.type === TransactionTypes.TRANSFER) {
+                if (transaction.primaryAccount === account.id) {
+                    sum -= transaction.amount
+                } else if (transaction.secondaryAccount === account.id) {
+                    sum += transaction.amount
+                }
+            }
+        })
+
+        return formatMoney(sum)
+    } else {
+        return null
+    }
+}
 
 const deleteAccount = () => {
     window.alert('This will delete the account.')
@@ -151,6 +187,10 @@ function isLiability() {
             <FlexBreak />
             <div class="flex w-full justify-start xl:justify-end">
                 <div class="stats stats-vertical xl:stats-horizontal">
+                    <div class="stat">
+                        <div class="stat-title">Cash Flow</div>
+                        <div class="stat-value">${{ currentMonthCashFlow() }}</div>
+                    </div>
                     <div class="stat">
                         <div class="stat-title">Balance</div>
                         <div class="stat-value">${{ balanceString }}</div>
