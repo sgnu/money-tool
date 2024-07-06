@@ -6,7 +6,7 @@ const { data: institutions } = await useFetch('/api/institutions', {
     onResponse() {
         setTimeout(() => {
             isLoading.value = false
-        }, 250)
+        }, useRuntimeConfig().minimumLoading)
     }
 })
 
