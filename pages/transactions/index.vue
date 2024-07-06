@@ -21,13 +21,19 @@ $fetch('/api/accounts', {
     <div v-if="accountLoading || transactionLoading">
         <div class="skeleton w-full h-12"></div>
     </div>
-    <div class="flex flex-col bg-base-200 shadow-xl px-4 py-2 gap-2 rounded-lg" v-else>
-        <div v-for="transaction in transactions">
-        <TransactionListing :transaction="transaction as unknown as Transaction"
+    <div class="flex flex-col bg-base-200 shadow-xl py-6 gap-1 rounded-lg max-w-[960px] mx-auto" v-else>
+        <template v-for="transaction in transactions">
+            <TransactionListing class="px-8" :transaction="transaction as unknown as Transaction"
             :primary-account="accountMap.get(transaction.primaryAccount)"
             :secondary-account="accountMap.get(transaction.secondaryAccount)"></TransactionListing>
-            <div class="divider"></div>
-        </div>
+            <div class="divider my-0" />
+        </template>
         <NuxtLink class="btn btn-outline btn-primary" to="/transactions/new">New</NuxtLink>
     </div>
 </template>
+
+<style scoped>
+.divider:last-child {
+    display: none;
+}
+</style>
