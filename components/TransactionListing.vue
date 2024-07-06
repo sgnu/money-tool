@@ -29,7 +29,8 @@ const date = computed(() => {
     return new Date(props.transaction.date).toLocaleDateString(undefined, {
         year: 'numeric',
         month: 'numeric',
-        day: '2-digit'
+        day: 'numeric',
+        timeZone: 'UTC'
     })
 })
 </script>
