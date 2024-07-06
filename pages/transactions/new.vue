@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { TransactionTypes } from '~/types/TransactionTypes'
-import VueDatePicker from '@vuepic/vue-datepicker'
-import '@vuepic/vue-datepicker/dist/main.css'
 
 const route = useRoute()
 let isLoading = ref(true)
@@ -23,7 +21,7 @@ await $fetch('/api/accounts', {
 const formData = reactive({
     name: '',
     type: <TransactionTypes | null> null,
-    date: '',
+    date: initDate(),
     amount: null,
     primaryAccount: <string | null> null,
     secondaryAccount: <string | null> null
@@ -62,6 +60,15 @@ const submit = () => {
     })
 }
 
+function initDate() {
+    // month and day need to be zero padded
+    const date = new Date()
+    // getMonth() is zero-indexed
+    const month = `${date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1}`
+    const day = `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`
+    
+    return `${date.getFullYear()}-${month}-${day}`
+}
 </script>
 
 <template>
@@ -80,7 +87,7 @@ const submit = () => {
                     <option disabled selected>Type</option>
                     <option v-for="type in TransactionTypes">{{ type }}</option>
                 </select>
-                <VueDatePicker v-model="formData.date" :dark="true" :enable-time-picker="false" auto-apply placeholder="Date" />
+                <input type="date" class="w-full px-4 py-2 bg-base-100 rounded" v-model="formData.date">
                 <label class="input input-bordered flex items-center gap-2 w-full">
                     Amount
                     <input type="text" class="grow" v-model="formData.amount" />
