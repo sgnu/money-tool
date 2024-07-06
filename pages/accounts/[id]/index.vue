@@ -34,12 +34,8 @@ if (account.accountType === AccountTypes.CHECKINGS) {
     defaultTransactions.value = [TransactionTypes.ADJUSTMENT, TransactionTypes.INTEREST, TransactionTypes.PURCHASE, TransactionTypes.PAYMENT]
 }
 
-const isLiability = computed(() => {
-    return account.accountType === AccountTypes.CREDIT || account.accountType === AccountTypes.LIABILITY
-})
-
-const balance = computed(() => {
-    return formatMoney(account.currentBalance)
+const balanceString = computed(() => {
+    return isLiability() ? `(${formatMoney(account.currentBalance)})` : formatMoney(account.currentBalance)
 })
 
 const deleteAccount = () => {
@@ -81,10 +77,14 @@ const createTransaction = (type?: TransactionTypes) => {
         query: queries
     })
 }
+
+function isLiability() {
+    return account.accountType === AccountTypes.CREDIT || account.accountType === AccountTypes.LIABILITY
+}
 </script>
 
 <template>
-    <div v-if="accountLoading || transactionLoading">
+    <div v-if="accountLoading || transactionLoading || institutionLoading">
         loading...
     </div>
     <div v-else>
@@ -93,10 +93,6 @@ const createTransaction = (type?: TransactionTypes) => {
                 <img :src="institution.icon" class="inline w-8 h-8"/>
                 <span>{{ account.name }} ...{{ account.accountNumber }}</span>
             </h1>
-            <p class="sm:ml-auto text-2xl italic">
-                <span v-if="isLiability">$({{ balance }})</span>
-                <span v-else>${{ balance }}</span>
-            </p>
             <FlexBreak />
             <p class="italic text-neutral-400">{{ account.accountType }}</p>
         </div>
@@ -150,6 +146,16 @@ const createTransaction = (type?: TransactionTypes) => {
                     </svg>
                     {{ transactionType }}
                 </button>
+            </div>
+
+            <FlexBreak />
+            <div class="flex w-full justify-start xl:justify-end">
+                <div class="stats stats-vertical xl:stats-horizontal">
+                    <div class="stat">
+                        <div class="stat-title">Balance</div>
+                        <div class="stat-value">${{ balanceString }}</div>
+                    </div>
+                </div>
             </div>
         </div>
 
