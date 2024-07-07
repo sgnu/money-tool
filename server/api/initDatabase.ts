@@ -73,7 +73,7 @@ export default defineEventHandler((event) => {
 
         defaultCategories.forEach(category => {
             db.run(`
-                INSERT INTO categories (id, name, icon)
+                INSERT OR IGNORE INTO categories (id, name, icon)
                 VALUES (?, ?, ?)
             `, [category.id, category.name, category.icon])
         })
