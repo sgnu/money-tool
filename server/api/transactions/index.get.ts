@@ -26,7 +26,9 @@ function sqlCall() {
     const promise = new Promise<SQLTransaction[]>((resolve, reject) => {
         db.all(`
             SELECT * from transactions
-            ORDER BY date DESC
+            ORDER BY 
+                date DESC,
+                id ASC
         `, (err: any, rows: any) => {
             if (err) {
                 reject(err)
