@@ -5,6 +5,39 @@ export default defineEventHandler((event) => {
     const sqlite3 = require('sqlite3').verbose()
     const db = new sqlite3.Database('./data/data.db')
 
+    const defaultCategories: Category[] = [
+        {
+            id: 0,
+            name: 'Shopping',
+            icon: '🛒'
+        },
+        {
+            id: 1,
+            name: 'Housing',
+            icon: '🏠'
+        },
+        {
+            id: 2,
+            name: 'Dining',
+            icon: '🍽️'
+        },
+        {
+            id: 3,
+            name: 'Groceries',
+            icon: '🍞'
+        },
+        {
+            id: 4,
+            name: 'Transportation',
+            icon: '🚗'
+        },
+        {
+            id: 5,
+            name: 'Travel',
+            icon: '✈️'
+        },
+    ]
+
     db.serialize(() => {
         db.run(`
             CREATE TABLE IF NOT EXISTS institutions (
@@ -59,6 +92,13 @@ export default defineEventHandler((event) => {
                 icon TEXT
             )
         `)
+
+        defaultCategories.forEach(category => {
+            db.run(`
+                INSERT INTO categories (id, name, icon)
+                VALUES (?, ?, ?)
+            `, [category.id, category.name, category.icon])
+        })
     })
 
     db.close()
