@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
             SELECT * FROM transactions
             ORDER BY
                 date DESC,
-                id ASC
+                id DESC
         `, (err: any, rows: any) => {
             if (err) {
                 reject(err)

@@ -28,7 +28,7 @@ function sqlCall() {
             SELECT * from transactions
             ORDER BY 
                 date DESC,
-                id ASC
+                id DESC
         `, (err: any, rows: any) => {
             if (err) {
                 reject(err)

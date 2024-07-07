@@ -75,7 +75,16 @@ export default defineEventHandler(async(event) => {
             return 1
         } else {
             // a is equal to b
-            return 0
+            if (a.id > b.id) {
+                // sort a before b
+                return -1
+            } else if (a.id < b.id) {
+                // sort a after b
+                return 1
+            } else {
+                // ids are equal
+                return 0
+            }
         }
     })
 

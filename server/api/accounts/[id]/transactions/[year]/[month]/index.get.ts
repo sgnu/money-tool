@@ -17,7 +17,9 @@ export default defineEventHandler(async (event) => {
     const promise = new Promise<Transaction[]>((resolve, reject) => {
         db.all(`
             SELECT * FROM transactions
-            ORDER BY date DESC
+            ORDER BY
+                date DESC,
+                id DESC
         `, (err: any, rows: any) => {
             if (err) {
                 reject(err)
