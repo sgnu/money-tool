@@ -39,12 +39,24 @@ export default defineEventHandler((event) => {
                 amount INTEGER NOT NULL,
                 primary_account INTEGER NOT NULL,
                 secondary_account INTEGER,
+                category INTEGER,
 
                 FOREIGN KEY (primary_account)
                     REFERENCES accounts (id),
 
                 FOREIGN KEY (secondary_account)
-                    REFERENCES accounts (id)
+                    REFERENCES accounts (id),
+
+                FOREIGN KEY (category)
+                    REFERENCES categories (id)
+            )
+        `)
+
+        db.run(`
+            CREATE TABLE IF NOT EXISTS categories (
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL,
+                icon TEXT
             )
         `)
     })

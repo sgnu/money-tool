@@ -36,15 +36,23 @@ declare global {
         amount: number,
         primaryAccount: number,
         secondaryAccount?: number,
+        category?: number,
     }
 
     interface SQLTransaction {
-    id: number,
-    name: string,
-    type: string,
-    date: string,
-    amount: number,
-    primary_account: number,
-    secondary_account: number
-}
+        id: number,
+        name: string,
+        type: string,
+        date: string,
+        amount: number,
+        primary_account: number,
+        secondary_account: number,
+        category?: number
+    }
+
+    interface Category {
+        id: number,
+        name: string,
+        icon?: string
+    }
 }
