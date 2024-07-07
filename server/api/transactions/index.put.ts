@@ -31,10 +31,10 @@ export default defineEventHandler(async (event) => {
     // user should delete transaction then create new transaction
     const data = db.run(`
         UPDATE transactions
-        SET amount=?
+        SET amount=?, category=?
         WHERE id=?
         RETURNING *
-    `, [body.amount, body.id])
+    `, [body.amount, body.category, body.id])
 
     db.close()
 

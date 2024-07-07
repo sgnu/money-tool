@@ -28,16 +28,16 @@ export default defineEventHandler(async (event) => {
 
     if (secondaryAccount) {
         db.run(`
-            INSERT INTO transactions (name, type, date, amount, primary_account, secondary_account)
-            VALUES (?, ?, DATE(?), ?, ?, ?)
+            INSERT INTO transactions (name, type, date, amount, primary_account, secondary_account, category)
+            VALUES (?, ?, DATE(?), ?, ?, ?, ?)
             RETURNING *
-        `, [name, body.type, date, body.amount, body.primaryAccount, body.secondaryAccount])
+        `, [name, body.type, date, body.amount, body.primaryAccount, body.secondaryAccount, body.category])
     } else {
         db.run(`
-            INSERT INTO transactions (name, type, date, amount, primary_account)
-            VALUES (?, ?, DATE(?), ?, ?)
+            INSERT INTO transactions (name, type, date, amount, primary_account, category)
+            VALUES (?, ?, DATE(?), ?, ?, ?)
             RETURNING *
-        `, [body.name, body.type, date, body.amount, body.primaryAccount])
+        `, [body.name, body.type, date, body.amount, body.primaryAccount, body.category])
     }
 
 
