@@ -6,6 +6,7 @@ export default function(sqlTransaction: SQLTransaction | null): Transaction | nu
         date: new Date(sqlTransaction.date),
         amount: sqlTransaction.amount,
         primaryAccount: sqlTransaction.primary_account,
-        secondaryAccount: sqlTransaction.secondary_account
+        secondaryAccount: sqlTransaction.secondary_account,
+        category: sqlTransaction.category
     } : null
 }
