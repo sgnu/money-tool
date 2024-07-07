@@ -6,12 +6,14 @@ const route = useRoute()
 
 const accountMap = ref(new Map())
 const currentDate = new Date()
+const previousDate = getPreviousMonth(currentDate)
 let accountLoading = ref(true)
 
 const { data: accountData } = await useFetch(`/api/accounts/${route.params.id}`)
 const { data: transactionData, pending: transactionLoading } = await useFetch(`/api/accounts/${route.params.id}/transactions`)
 const { data: institutionData, pending: institutionLoading } = await useFetch(`/api/institutions/${accountData.value?.institutionId}`)
 const { data: currentMonthData } = await useFetch(`/api/accounts/${route.params.id}/transactions/${currentDate.getUTCFullYear()}/${currentDate.getUTCMonth() + 1}`)
+const { data: previousMonthData } = await useFetch(`/api/accounts/${route.params.id}/transactions/${previousDate.getUTCFullYear()}/${previousDate.getUTCMonth() + 1}`)
 
 $fetch('/api/accounts', {
     onResponse({ response }) {
@@ -28,6 +30,7 @@ const institution: Institution = institutionData.value as Institution
 const account: Account = accountData.value as Account
 const transactions: Transaction[] = transactionData.value as unknown as Transaction[]
 const currentMonth: Transaction[] = currentMonthData.value as unknown as Transaction[]
+const previousMonth: Transaction[] = previousMonthData.value as unknown as Transaction[]
 
 const defaultTransactions = ref<TransactionTypes[]>([])
 
@@ -43,10 +46,12 @@ const balanceString = computed(() => {
     return isLiability() ? `(${formatMoney(account.currentBalance)})` : formatMoney(account.currentBalance)
 })
 
-function currentMonthCashFlow() {
-    if (currentMonth) {
+function cashFlow(transactionArray: Transaction[]) {
+    // TODO: maybe change to return an object,
+    // negative flow is displayed as $-X currently
+    if (transactionArray) {
         let sum = 0
-        currentMonth.forEach(transaction => {
+        transactionArray.forEach(transaction => {
             if (transaction.type === TransactionTypes.INCOME) {
                 sum += transaction.amount
             } else if (transaction.type === TransactionTypes.INTEREST) {
@@ -187,9 +192,13 @@ function isLiability() {
             <FlexBreak />
             <div class="flex w-full justify-start xl:justify-end">
                 <div class="stats stats-vertical xl:stats-horizontal">
-                    <div class="stat">
-                        <div class="stat-title">Cash Flow</div>
-                        <div class="stat-value">${{ currentMonthCashFlow() }}</div>
+                    <div class="stat" v-if="previousMonth.length > 0">
+                        <div class="stat-title">Last Month's Cash Flow</div>
+                        <div class="stat-value">${{ cashFlow(previousMonth) }}</div>
+                    </div>
+                    <div class="stat" v-if="currentMonth.length > 0">
+                        <div class="stat-title">This Month's Cash Flow</div>
+                        <div class="stat-value">${{ cashFlow(currentMonth) }}</div>
                     </div>
                     <div class="stat">
                         <div class="stat-title">Balance</div>
