@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     const primaryAccount: Account | null = await getAccount(body.primaryAccount, db)
     const secondaryAccount: Account | null = await getAccount(body.secondaryAccount, db)
 
-    updateAccountBalances(primaryAccount, secondaryAccount, body.type, body.amount as number)
+    updateAccountBalances(primaryAccount, secondaryAccount, body.type, parseFloat(body.amount as any))
 
     const date = new Date(body.date).toISOString()
 
