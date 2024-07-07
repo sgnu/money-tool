@@ -2,19 +2,35 @@
 import { TransactionTypes } from '~/types/TransactionTypes'
 
 const route = useRoute()
-let isLoading = ref(true)
+let accountLoading = ref(true)
+let categoryLoading = ref(true)
 const accounts = ref<Account[]>([])
-const accountMap = ref(new Map<number, Account>())
+// const accountMap = ref(new Map<number, Account>())
+
+const categories = ref<Category[]>([])
+const categoryMap = ref(new Map<number, Category>())
 
 await $fetch('/api/accounts', {
     onResponse({ response }) {
         response._data.forEach((account: Account) => {
             accounts.value.push(account)
-            accountMap.value.set(account.id, account)
+            // accountMap.value.set(account.id, account)
         })
         setTimeout(() => {
-            isLoading.value = false
-        }, 250)
+            accountLoading.value = false
+        }, useRuntimeConfig().minimumLoading)
+    }
+})
+
+await $fetch('/api/transactions/categories', {
+    onResponse({ response }) {
+        response._data.forEach((category: Category) => {
+            categories.value.push(category)
+            categoryMap.value.set(category.id, category)
+        })
+        setTimeout(() => {
+            categoryLoading.value = false
+        }, useRuntimeConfig().minimumLoading)
     }
 })
 
@@ -24,7 +40,8 @@ const formData = reactive({
     date: initDate(),
     amount: null,
     primaryAccount: <string | null> null,
-    secondaryAccount: <string | null> null
+    secondaryAccount: <string | null> null,
+    category: <string | null> null
 })
 
 if (route.query.primaryAccount) {
@@ -44,7 +61,8 @@ const submit = () => {
         date: new Date(formData.date),
         amount: formData.amount,
         primaryAccount: formData.primaryAccount,
-        secondaryAccount: formData.secondaryAccount
+        secondaryAccount: formData.secondaryAccount,
+        category: formData.category
     }
 
     console.log(tempTransaction)
@@ -74,7 +92,7 @@ function initDate() {
 <template>
     <div class="flex justify-center">
         <Transition name="loading-form">
-            <FormCard v-if="isLoading">
+            <FormCard v-if="accountLoading || categoryLoading">
                 <div class="skeleton w-full h-12"></div>
             </FormCard>
             <FormCard v-else @submit.prevent="submit">
@@ -86,6 +104,11 @@ function initDate() {
                 <select class="select select-bordered w-full" v-model="formData.type">
                     <option disabled selected>Type</option>
                     <option v-for="type in TransactionTypes">{{ type }}</option>
+                </select>
+                <select class="select select-bordered w-full" v-model="formData.category">
+                    <option disabled selected>Category</option>
+                    <option :value="null" selected>Uncategorized</option>
+                    <option v-for="category in categories" :value="category.id"><span v-if="category.icon && category.icon.length > 0">{{ category.icon }}</span> {{ category.name }}</option>
                 </select>
                 <input type="date" class="w-full px-4 py-2 bg-base-100 rounded" v-model="formData.date">
                 <label class="input input-bordered flex items-center gap-2 w-full">

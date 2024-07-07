@@ -6,6 +6,7 @@ const props = defineProps<{
     primaryAccount: Account,
     secondaryAccount: Account,
     transaction: Transaction,
+    category?: Category,
     accountView?: boolean,
 }>()
 
@@ -44,7 +45,11 @@ const date = computed(() => {
             <p class="ml-auto text-nowrap">...{{ primaryAccount.accountNumber }} <span v-if="secondaryAccount"> to ...{{ secondaryAccount.accountNumber }}</span></p>
         </div>
         <FlexBreak />
-        <p class="basis-auto">{{ date }}</p>
+        <p class="basis-auto">
+            <span v-if="category"><span v-if="category.icon && category.icon.length > 0">{{ category.icon }}</span> {{ category.name }}</span>
+            <span v-else class="italic text-neutral-300">Uncategorized</span>
+            {{ date }}
+        </p>
         <p :class="amountClasses" class="ml-auto text-nowrap">{{ transaction.type }} ${{ amount }}</p>
     </div>
 </template>

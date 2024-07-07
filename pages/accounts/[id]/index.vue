@@ -5,9 +5,11 @@ import { TransactionTypes } from '~/types/TransactionTypes';
 const route = useRoute()
 
 const accountMap = ref(new Map())
+const categoryMap = ref(new Map<number, Category>())
 const currentDate = new Date()
 const previousDate = getPreviousMonth(currentDate)
 let accountLoading = ref(true)
+let categoryLoading = ref(true)
 
 const { data: accountData } = await useFetch(`/api/accounts/${route.params.id}`)
 const { data: transactionData, pending: transactionLoading } = await useFetch(`/api/accounts/${route.params.id}/transactions`)
@@ -15,15 +17,30 @@ const { data: institutionData, pending: institutionLoading } = await useFetch(`/
 const { data: currentMonthData } = await useFetch(`/api/accounts/${route.params.id}/transactions/${currentDate.getUTCFullYear()}/${currentDate.getUTCMonth() + 1}`)
 const { data: previousMonthData } = await useFetch(`/api/accounts/${route.params.id}/transactions/${previousDate.getUTCFullYear()}/${previousDate.getUTCMonth() + 1}`)
 
-$fetch('/api/accounts', {
-    onResponse({ response }) {
-        (response._data as any[]).forEach((account: Account) => {
-            accountMap.value.set(account.id, account)
+onMounted(async () => {
+    await nextTick(async () => {
+        $fetch('/api/accounts', {
+            onResponse({ response }) {
+                (response._data as any[]).forEach((account: Account) => {
+                    accountMap.value.set(account.id, account)
+                })
+                setTimeout(() => {
+                    accountLoading.value = false
+                }, useRuntimeConfig().minimumLoading)
+            }
         })
-        setTimeout(() => {
-            accountLoading.value = false
-        }, useRuntimeConfig().minimumLoading)
-    }
+
+        $fetch('/api/transactions/categories', {
+            onResponse({ response }) {
+                (response._data as Category[]).forEach(category => {
+                    categoryMap.value.set(category.id, category)
+                })
+                setTimeout(() => {
+                    categoryLoading.value = false
+                }, useRuntimeConfig().minimumLoading)
+            }
+        })
+    })
 })
 
 const institution: Institution = institutionData.value as Institution
@@ -125,7 +142,7 @@ function isLiability() {
 </script>
 
 <template>
-    <div v-if="accountLoading || transactionLoading || institutionLoading">
+    <div v-if="accountLoading || transactionLoading || institutionLoading || categoryLoading">
         loading...
     </div>
     <div v-else>
@@ -214,7 +231,8 @@ function isLiability() {
             <template v-for="transaction in transactions">
                 <TransactionListing class="px-8" :transaction="transaction"
                     :primary-account="accountMap.get(transaction.primaryAccount)"
-                    :secondary-account="accountMap.get(transaction.secondaryAccount)" />
+                    :secondary-account="accountMap.get(transaction.secondaryAccount)"
+                    :category="categoryMap.get(transaction.category as number)" />
                 <div class="divider my-0" />
             </template>
         </div>
