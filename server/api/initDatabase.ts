@@ -64,6 +64,21 @@ export default defineEventHandler((event) => {
         `)
 
         db.run(`
+            CREATE TABLE IF NOT EXISTS categories (
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL,
+                icon TEXT
+            )
+        `)
+
+        defaultCategories.forEach(category => {
+            db.run(`
+                INSERT INTO categories (id, name, icon)
+                VALUES (?, ?, ?)
+            `, [category.id, category.name, category.icon])
+        })
+
+        db.run(`
             CREATE TABLE IF NOT EXISTS transactions (
                 id INTEGER PRIMARY KEY,
                 name TEXT,
@@ -84,21 +99,6 @@ export default defineEventHandler((event) => {
                     REFERENCES categories (id)
             )
         `)
-
-        db.run(`
-            CREATE TABLE IF NOT EXISTS categories (
-                id INTEGER PRIMARY KEY,
-                name TEXT NOT NULL,
-                icon TEXT
-            )
-        `)
-
-        defaultCategories.forEach(category => {
-            db.run(`
-                INSERT INTO categories (id, name, icon)
-                VALUES (?, ?, ?)
-            `, [category.id, category.name, category.icon])
-        })
     })
 
     db.close()
