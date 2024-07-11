@@ -37,15 +37,34 @@ onMounted(async () => {
     <div v-if="accountLoading || transactionLoading || categoryLoading">
         <div class="skeleton w-full h-12"></div>
     </div>
-    <div class="flex flex-col bg-base-200 shadow-xl py-6 gap-1 rounded-lg max-w-[960px] mx-auto" v-else>
-        <template v-for="transaction in transactions">
-            <TransactionListing class="px-8" :transaction="transaction as unknown as Transaction"
-            :primary-account="accountMap.get(transaction.primaryAccount)"
-            :secondary-account="accountMap.get(transaction.secondaryAccount)"
-            :category="categoryMap.get(transaction.category as number)"></TransactionListing>
-            <div class="divider my-0" />
-        </template>
-        <NuxtLink class="btn btn-outline btn-primary" to="/transactions/new">New</NuxtLink>
+    <div v-else>
+        <div class="flex flex-wrap items-baseline mb-2">
+            <h2 class="text-3xl">Categories</h2>
+
+            <FlexBreak />
+
+            <div class="flex flex-col">
+                <div v-for="category in categoryMap">
+                    {{ category[1].icon }}
+                    {{ category[1].name }}
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-3xl">Transactions</h2>
+
+        <div class="divider" />
+
+        <div class="flex flex-col bg-base-200 shadow-xl py-6 gap-1 rounded-lg max-w-[960px] mx-auto">
+            <template v-for="transaction in transactions">
+                <TransactionListing class="px-8" :transaction="transaction as unknown as Transaction"
+                :primary-account="accountMap.get(transaction.primaryAccount)"
+                :secondary-account="accountMap.get(transaction.secondaryAccount)"
+                :category="categoryMap.get(transaction.category as number)"></TransactionListing>
+                <div class="divider my-0" />
+            </template>
+            <NuxtLink class="btn btn-outline btn-primary" to="/transactions/new">New</NuxtLink>
+        </div>
     </div>
 </template>
 
