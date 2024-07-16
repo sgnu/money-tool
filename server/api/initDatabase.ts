@@ -7,32 +7,32 @@ export default defineEventHandler((event) => {
 
     const defaultCategories: Category[] = [
         {
-            id: 0,
+            id: 1,
             name: 'Shopping',
             icon: '🛒'
         },
         {
-            id: 1,
+            id: 2,
             name: 'Housing',
             icon: '🏠'
         },
         {
-            id: 2,
+            id: 3,
             name: 'Dining',
             icon: '🍽️'
         },
         {
-            id: 3,
+            id: 4,
             name: 'Groceries',
             icon: '🍞'
         },
         {
-            id: 4,
+            id: 5,
             name: 'Transportation',
             icon: '🚗'
         },
         {
-            id: 5,
+            id: 6,
             name: 'Travel',
             icon: '✈️'
         },
