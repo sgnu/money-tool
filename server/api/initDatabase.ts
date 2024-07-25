@@ -1,42 +1,10 @@
 import { createRequire } from 'module'
+import fillDefaultCategories from '~/utils/fillDefaultCategories'
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
     const require = createRequire(import.meta.url)
     const sqlite3 = require('sqlite3').verbose()
     const db = new sqlite3.Database('./data/data.db')
-
-    const defaultCategories: Category[] = [
-        {
-            id: 1,
-            name: 'Shopping',
-            icon: '🛒'
-        },
-        {
-            id: 2,
-            name: 'Housing',
-            icon: '🏠'
-        },
-        {
-            id: 3,
-            name: 'Dining',
-            icon: '🍽️'
-        },
-        {
-            id: 4,
-            name: 'Groceries',
-            icon: '🍞'
-        },
-        {
-            id: 5,
-            name: 'Transportation',
-            icon: '🚗'
-        },
-        {
-            id: 6,
-            name: 'Travel',
-            icon: '✈️'
-        },
-    ]
 
     db.serialize(() => {
         db.run(`
@@ -71,13 +39,6 @@ export default defineEventHandler((event) => {
             )
         `)
 
-        defaultCategories.forEach(category => {
-            db.run(`
-                INSERT OR IGNORE INTO categories (id, name, icon)
-                VALUES (?, ?, ?)
-            `, [category.id, category.name, category.icon])
-        })
-
         db.run(`
             CREATE TABLE IF NOT EXISTS transactions (
                 id INTEGER PRIMARY KEY,
@@ -100,6 +61,22 @@ export default defineEventHandler((event) => {
             )
         `)
     })
+
+    const categories = await new Promise<number>((resolve, reject) => {
+        db.all(`
+            SELECT * FROM categories
+        `, (err: any, rows: any[]) => {
+            if (err) {
+                reject(err)
+            }
+
+            resolve(rows.length)
+        })
+    })
+
+    if (!categories) {
+        fillDefaultCategories()
+    }
 
     db.close()
     return('maybe success')
