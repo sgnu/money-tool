@@ -60,6 +60,28 @@ export default defineEventHandler(async (event) => {
                     REFERENCES categories (id)
             )
         `)
+
+        db.run(`
+            CREATE TABLE IF NOT EXISTS automatic_rules (
+                id INTERGER PRIMARY KEY,
+                name TEXT,
+                label TEXT,
+                is_regex INTEGER,
+                primary_account INTEGER,
+                secondary_account INTEGER,
+                category INTEGER NOT NULL,
+                transaction_type TEXT,
+
+                FOREGIN KEY (primary_account)
+                    REFERENCES accounts (id),
+
+                FOREGIN KEY (secondary_account)
+                    REFERENCES accounts (id),
+
+                FOREGIN KEY (category)
+                    REFERENCES categories (id),
+            )
+        `)
     })
 
     const categories = await new Promise<number>((resolve, reject) => {
