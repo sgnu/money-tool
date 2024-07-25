@@ -1,3 +1,5 @@
+import type { TransactionTypes } from "./TransactionTypes"
+
 export {  }
 
 declare global {
@@ -54,5 +56,16 @@ declare global {
         id: number,
         name: string,
         icon?: string
+    }
+
+    interface AutomaticRule {
+        id: number,
+        name?: string,
+        label?: string,
+        isRegex?: boolean,
+        primaryAccount?: number,
+        secondaryAccount?: number,
+        category: number,
+        transactionType?: TransactionTypes
     }
 }
